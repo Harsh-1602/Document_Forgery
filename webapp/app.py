@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
+
 
 @app.route('/')
 def index():
