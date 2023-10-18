@@ -57,22 +57,12 @@
         }
         .result-box {
             display: none;
-            background-color: #f9f9f9; /* Light Gray */
-            border: 2px solid #3498db; /* Blue */
-            padding: 15px;
+            background-color: white;
+            border: 2px solid blue;
+            padding: 10px;
             font-size: 20px;
             font-weight: bold;
             margin-top: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box Shadow */
-            border-radius: 10px; /* Rounded Corners */
-        }
-        .result-box p {
-            margin: 0;
-        }
-        .result-heading {
-            font-size: 24px;
-            color: #3498db; /* Blue */
-            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -84,10 +74,7 @@
         </div>
         <div class="file-upload-status" id="fileStatus"></div>
         <div class="analyze-btn" id="analyzeBtn">Analyse</div>
-        <div class="result-box" id="resultBox">
-            <p class="result-heading">Result</p>
-            <p>Forgery detected!</p> <!-- Placeholder result -->
-        </div>
+        <div class="result-box" id="resultBox">Result</div>
     </div>
     <script>
         document.getElementById('file').addEventListener('change', function() {
@@ -101,3 +88,4 @@
     </script>
 </body>
 </html>
+ 
