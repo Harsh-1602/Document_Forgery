@@ -1,2 +1,3 @@
-os-sys
 opencv-python
+Pillow
+os
