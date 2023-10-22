@@ -123,8 +123,10 @@ celerybeat.pid
 .env
 .forgery
 .Dataset
+.runs
 env/
 forgery/
+runs/
 ENV/
 Dataset/
 env.bak/
