@@ -33,7 +33,7 @@ def predict():
     # image.save(os.path.join(app.config['UPLOAD'],filename))
     # file=os.path.join(app.config['UPLOAD'],filename)
 
-    def bboxes(result):
+    def bboxes(result, thres):
         boxes = result[0].boxes.cpu().numpy()
         # print(first)
         qu = {}
@@ -42,7 +42,7 @@ def predict():
         conf = []
         visited = [0] * len(boxes)
         for i, box in enumerate(boxes):
-            if(box.conf[0] < 0.47):
+            if(box.conf[0] < thres):
                 continue
             if(visited[i]):
                 continue
@@ -62,7 +62,7 @@ def predict():
                 # print(val)
                 for j, b in enumerate(boxes):
                     # print(j)
-                    if(b.conf[0] < 0.47):
+                    if(b.conf[0] < thres):
                         continue
                     
                     if(index == j):
@@ -102,18 +102,34 @@ def predict():
         # print(coord)
         return coord, conf
 
-    def plot(result, img):
+    def plot(result_DF, result_OW, img, ):
 
-        final_coord, final_conf = bboxes(result)
+        final_DF_coord, final_DF_conf = [], []
+        final_OW_coord, final_OW_conf = [], []
+        if(len(result_DF)):
+            final_DF_coord, final_DF_conf = bboxes(result_DF, 0.47)
+        if(len(result_OW)):
+            final_OW_coord, final_OW_conf = bboxes(result_OW, 0.55)
 
-        for i, box in enumerate(final_coord):
-            r = [v.astype(int) for v in box]
-            # print(r)                                               # print boxes
-            cv2.rectangle(img, r[:2], r[2:], (0, 0, 255), 1)
-            #img = cv2.rectangle(img, (r[0], r[1] - 5), (r[2], r[1]), (0, 0, 255), -1)
-            text = str(round(final_conf[i] * 100, 2))
-            print(text)
-            img = cv2.putText(img, text, (r[0], r[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.23, (0, 0, 255), 1)
+        if(len(final_DF_conf)):
+            for i, box in enumerate(final_DF_coord):
+                r = [v.astype(int) for v in box]
+                # print(r)                                               # print boxes
+                cv2.rectangle(img, r[:2], r[2:], (0, 0, 255), 1)
+                #img = cv2.rectangle(img, (r[0], r[1] - 5), (r[2], r[1]), (0, 0, 255), -1)
+                text = str(round(final_DF_conf[i] * 100, 2))
+                print(text)
+                img = cv2.putText(img, text, (r[0], r[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.23, (0, 0, 255), 1)
+        
+        if(len(final_OW_conf)):
+            for i, box in enumerate(final_OW_coord):
+                r = [v.astype(int) for v in box]
+                # print(r)                                               # print boxes
+                cv2.rectangle(img, r[:2], r[2:], (255, 0, 0), 1)
+                #img = cv2.rectangle(img, (r[0], r[1] - 5), (r[2], r[1]), (0, 0, 255), -1)
+                text = str(round(final_OW_conf[i] * 100, 2))
+                print(text)
+                img = cv2.putText(img, text, (r[0], r[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.23, (255, 0, 0), 1)
 
         return img
 
@@ -134,8 +150,9 @@ def predict():
     # img=n_img
 
     u_img = cv2.imread(os.path.join("static", "uploads", filename))
-    imag=OW.predict(img)
-    imag = plot(imag, u_img)
+    imag_DF = DF.predict(img)
+    imag_OW = OW.predict(img)
+    imag = plot(imag_DF, imag_OW, u_img)
     img_arr=imag
     pred=Image.fromarray(img_arr[...,::-1])
 
