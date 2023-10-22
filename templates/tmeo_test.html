@@ -2,69 +2,7 @@
 <html>
 <head>
     <title>Watermark Detection</title>
-    <style>
-        body {
-            background-color: #87CEEB; /* Sky Blue */
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .upload-btn-wrapper {
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .btn {
-            border: 2px solid gray;
-            color: gray;
-            background-color: white;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .upload-btn-wrapper input[type=file] {
-            font-size: 100px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-        }
-        .file-upload-status {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .analyze-btn {
-            border: 2px solid gray;
-            color: gray;
-            background-color: purple;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .analyze-btn.clicked {
-            background-color: green;
-        }
-        .result-box {
-            display: none;
-            background-color: white;
-            border: 2px solid blue;
-            padding: 10px;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
