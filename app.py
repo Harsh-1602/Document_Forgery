@@ -14,7 +14,6 @@ app=Flask(__name__)
 
 DF = pickle.load(open('models/DF_2.pkl','rb'))
 OW = pickle.load(open("models/OW.pkl", "rb"))
-# model= YOLO("models/best.pt")
 
 upload_folder=os.path.join('static','uploads')
 predicted_folder=os.path.join('static','Predicted')
@@ -28,10 +27,6 @@ def home():
 
 
 def predict():
-    # image=request.files['file']
-    # filename=secure_filename(image.filename)
-    # image.save(os.path.join(app.config['UPLOAD'],filename))
-    # file=os.path.join(app.config['UPLOAD'],filename)
 
     def bboxes(result, thres):
         boxes = result[0].boxes.cpu().numpy()
@@ -75,14 +70,10 @@ def predict():
 
                     p = b.xyxy[0]
                     dist = np.sqrt(np.square(p[0] - prev[0]) + np.square(p[1] - prev[1]))
-                    # print(dist)
-                    if(dist < 9):
+                    if(dist < 15):
                         qu[j] = p
                         small.append(p)
-                        # print(p)
-            # print(i)
-                # print(small)
-                # print(con)
+
             if(con):
                 conf.append(round(con, 2))
             if(len(small)):
@@ -114,9 +105,7 @@ def predict():
         if(len(final_DF_conf)):
             for i, box in enumerate(final_DF_coord):
                 r = [v.astype(int) for v in box]
-                # print(r)                                               # print boxes
                 cv2.rectangle(img, r[:2], r[2:], (0, 0, 255), 1)
-                #img = cv2.rectangle(img, (r[0], r[1] - 5), (r[2], r[1]), (0, 0, 255), -1)
                 text = str(round(final_DF_conf[i] * 100, 2))
                 print(text)
                 img = cv2.putText(img, text, (r[0], r[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.23, (0, 0, 255), 1)
@@ -124,9 +113,8 @@ def predict():
         if(len(final_OW_conf)):
             for i, box in enumerate(final_OW_coord):
                 r = [v.astype(int) for v in box]
-                # print(r)                                               # print boxes
+                # print(r)                                             
                 cv2.rectangle(img, r[:2], r[2:], (255, 0, 0), 1)
-                #img = cv2.rectangle(img, (r[0], r[1] - 5), (r[2], r[1]), (0, 0, 255), -1)
                 text = str(round(final_OW_conf[i] * 100, 2))
                 print(text)
                 img = cv2.putText(img, text, (r[0], r[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.23, (255, 0, 0), 1)
@@ -137,17 +125,6 @@ def predict():
     filename = secure_filename(file.filename)
     file.save(os.path.join(app.config['UPLOAD'], filename))
     img = os.path.join(app.config['UPLOAD'], filename)
-    # return render_template('image_render.html', img=img)
-# # sequence=tokenizers.texts_to_sequences(str(sentence))
-    # # padded = pad_sequences(sequence, maxlen=max_length, padding=padding_type, truncating=trunc_type)
-    # # for it in model.predict(padded):
-    # #     if(it>0.5):
-    # #         output="Sarcasm"
-    # #     else:
-    #         output="NOT Sarcasm"
-    # return render_template("index.html",prediction_text="{}".format(output))
-    # n_img=img.resize((640,640))
-    # img=n_img
 
     u_img = cv2.imread(os.path.join("static", "uploads", filename))
     imag_DF = DF.predict(img)
@@ -158,7 +135,6 @@ def predict():
 
     pred.save(os.path.join(app.config['PREDICTED'], filename))
 
-    # print(type(pred))
     img1 = os.path.join(app.config['PREDICTED'], filename)
 
     return render_template("final.html",img=img1)
