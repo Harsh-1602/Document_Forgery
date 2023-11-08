@@ -124,6 +124,8 @@ celerybeat.pid
 .forgery
 .Dataset
 .runs
+.Notebook
+Notebook/
 env/
 forgery/
 runs/
